@@ -1,3 +1,5 @@
+import { ICategory } from './ICategory'
+
 export interface IPost {
     author: {
         id: string
@@ -14,11 +16,19 @@ export interface IPost {
     featuredImage: {
         url: string
     }
-    categories: {
-        name: string
-        slug: string
-    }[]
+    categories: ICategory[]
 }
+
 export interface IServerPost {
     node: IPost
+}
+
+export interface ILitePost {
+    title: string
+    featuredImage: {
+        url: string
+    }
+    createdAt: string
+    slug: string
+    categories: ICategory[]
 }
