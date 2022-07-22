@@ -37,3 +37,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# graphql auto-generated schema from headless cms (Hygraph)
+schemas.dev.graphql

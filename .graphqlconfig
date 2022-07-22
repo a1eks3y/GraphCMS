@@ -1,0 +1,12 @@
+{
+  "name": "Remote Schemas",
+  "schemaPath": "schemas.dev.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "https://api-eu-central-1.hygraph.com/v2/cl5v014v941am01uo79pqag03/master",
+        "introspect": true
+      }
+    }
+  }
+}
