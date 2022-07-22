@@ -3,7 +3,7 @@ import { ILitePost, IServerPost } from '../types/IPost'
 import { ICategory } from '../types/ICategory'
 
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT
-if(!graphqlAPI)
+if ( !graphqlAPI )
     throw new Error('graphqlAPI does not exist at .env')
 
 export const getPosts = async (): Promise<IServerPost[]> => {
@@ -78,4 +78,17 @@ export const getSimilarPosts = async ( categories: ICategory[], slug: string ): 
     `
     const results = await request(graphqlAPI, query, { categories, slug })
     return results.posts
+}
+
+export const getCategories = async (): Promise<ICategory[]> => {
+    const query = gql`
+        query GetCategories{
+            categories {
+                name
+                slug
+            }
+        }
+    `
+    const results = await request(graphqlAPI, query)
+    return results.categories
 }
