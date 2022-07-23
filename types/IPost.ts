@@ -1,14 +1,8 @@
 import { ICategory } from './ICategory'
+import { IAuthor } from './IAuthor'
 
 export interface IPost {
-    author: {
-        id: string
-        name: string
-        bio: string
-        photo: {
-            url: string
-        }
-    }
+    author: IAuthor
     createdAt: string
     slug: string
     title: string
@@ -17,6 +11,19 @@ export interface IPost {
         url: string
     }
     categories: ICategory[]
+}
+
+export type IPostDetails = IPost & {
+    content: {
+        raw: {
+            children: {
+                type: string
+                children: {
+                    text: string
+                }[]
+            }[]
+        }
+    }
 }
 
 export interface IServerPost {

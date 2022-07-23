@@ -1,6 +1,8 @@
-import { request, gql } from 'graphql-request'
-import { ILitePost, IServerPost } from '../types/IPost'
+import { gql, request } from 'graphql-request'
+import { ILitePost, IPostDetails, IServerPost } from '../types/IPost'
 import { ICategory } from '../types/ICategory'
+import axios from 'axios'
+import { IComment } from '../types/IComment'
 
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT
 if ( !graphqlAPI )
@@ -60,7 +62,7 @@ export const getRecentPosts = async (): Promise<ILitePost[]> => {
     return results.posts
 }
 
-export const getSimilarPosts = async ( categories: ICategory[], slug: string ): Promise<ILitePost[]> => {
+export const getSimilarPosts = async ( categories: string[], slug: string ): Promise<ILitePost[]> => {
     const query = gql`
         query GetPostDetails($slug: String!, $categories: [String!]){
             posts(
@@ -91,4 +93,57 @@ export const getCategories = async (): Promise<ICategory[]> => {
     `
     const results = await request(graphqlAPI, query)
     return results.categories
+}
+
+export const getPostDetails = async ( slug: string ): Promise<IPostDetails> => {
+    const query = gql`
+        query GetPostDetails($slug: String!) {
+            posts(where: {slug: $slug}){
+                author {
+                    bio
+                    id
+                    name
+                    photo {
+                        url
+                    }
+                }
+                createdAt
+                slug
+                title
+                excerpt
+                featuredImage {
+                    url
+                }
+                categories {
+                    name
+                    slug
+                }
+                content {
+                    raw
+                }
+            }
+        }
+    `
+    const results = await request(graphqlAPI, query, { slug })
+    return results.posts[ 0 ]
+}
+
+export const submitComment = async ( obj: { name: string, email: string, comment: string, slug: string } ) => {
+    await axios.post('/api/comments', obj)
+
+    return
+}
+
+export const getComments = async ( slug: string ): Promise<IComment[]> => {
+    const query = gql`
+        query GetComments($slug: String!){
+            comments(where: { post: { slug: $slug } } ) {
+                name
+                comment
+                createdAt
+            }
+        }
+    `
+    const results = await request(graphqlAPI, query, { slug })
+    return results.comments
 }

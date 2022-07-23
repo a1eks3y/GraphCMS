@@ -1,4 +1,4 @@
-export interface ICategory{
+export interface ICategory {
     name: string
     slug: string
 }
