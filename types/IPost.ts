@@ -39,3 +39,45 @@ export interface ILitePost {
     slug: string
     categories: ICategory[]
 }
+
+export interface IFeaturedPost {
+    title: string
+    featuredImage: {
+        url: string
+    }
+    createdAt: string
+    slug: string
+    author: {
+        name: string
+        photo: {
+            url: string
+        }
+    }
+}
+
+export interface ICategoryPost {
+    cursor: string,
+    node: {
+        author: {
+            bio: string,
+            name: string,
+            id: string,
+            photo: {
+                url: string
+            }
+        },
+        createdAt: string,
+        slug: string,
+        title: string,
+        excerpt: string,
+        featuredImage: {
+            url: string
+        },
+        categories: [
+            {
+                name: string,
+                slug: string
+            }
+        ]
+    }
+}

@@ -1,5 +1,5 @@
 import { gql, request } from 'graphql-request'
-import { ILitePost, IPostDetails, IServerPost } from '../types/IPost'
+import { ICategoryPost, IFeaturedPost, ILitePost, IPostDetails, IServerPost } from '../types/IPost'
 import { ICategory } from '../types/ICategory'
 import axios from 'axios'
 import { IComment } from '../types/IComment'
@@ -146,4 +146,64 @@ export const getComments = async ( slug: string ): Promise<IComment[]> => {
     `
     const results = await request(graphqlAPI, query, { slug })
     return results.comments
+}
+
+export const getFeaturedPosts = async (): Promise<IFeaturedPost[]> => {
+    const query = gql`
+        query GetPosts {
+            posts(where: {featuredPost: true}) {
+                author {
+                    name
+                    photo {
+                        url
+                    }
+                }
+                slug
+                title
+                createdAt
+                featuredImage {
+                    url
+                }
+            }
+        }
+    `
+    const results = await request(graphqlAPI, query)
+    return results.posts
+}
+
+export const getCategoryPost = async ( slug: string ): Promise<ICategoryPost[]> => {
+    const query = gql`
+        query GetCategoryPost($slug: String!) {
+            postsConnection(where: {categories_some: {slug: $slug}}) {
+                edges {
+                    cursor
+                    node {
+                        author {
+                            bio
+                            name
+                            id
+                            photo {
+                                url
+                            }
+                        }
+                        createdAt
+                        slug
+                        title
+                        excerpt
+                        featuredImage {
+                            url
+                        }
+                        categories {
+                            name
+                            slug
+                        }
+                    }
+                }
+            }
+        }
+    `
+
+    const result = await request(graphqlAPI, query, { slug })
+
+    return result.postsConnection.edges
 }

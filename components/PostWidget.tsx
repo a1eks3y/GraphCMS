@@ -30,10 +30,10 @@ const PostWidget: React.FunctionComponent<Props | { slug: null }> =
                     <div key={ post.title } className='flex items-center w-full mb-4'>
                         <div className='w-16 flex-none'>
                             <img
-                                height='60px'
                                 width='60px'
                                 src={ post.featuredImage.url }
                                 alt={ post.title }
+                                style={ { minHeight : '60px' } }
                                 className='align-middle rounded-full'
                             />
                         </div>
